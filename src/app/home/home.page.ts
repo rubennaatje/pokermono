@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  constructor() {
+    // initialize the plugin
+ 
+  } 
+
+  private addGeofence() {
+    
+  }
+  
 }

@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title *ngIf="selectedPokemon">{{selectedPokemon.name}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+
+    <ion-card *ngIf="selectedPokemon">
+        <ion-card-header>
+            <img src="assets/pokemon/other-sprites/official-artwork/{{selectedPokemon.id}}.png"/>
+          <ion-card-subtitle>Pokemon</ion-card-subtitle>
+          <ion-card-title>{{selectedPokemon.name}}</ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>{{selectedPokemon.flavourtext}}
+        </ion-card-content>
+      </ion-card>
+</ion-content>

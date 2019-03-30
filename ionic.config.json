@@ -1,5 +1,7 @@
 {
   "name": "pokemon",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

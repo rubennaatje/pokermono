@@ -11,12 +11,12 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
+    <ion-item *ngFor="let item of listOfPokemon" routerLink="/species/{{item.entry_number}}">
+      <ion-avatar slot="start" *ngIf="item.entry_number"> 
+          <img src="assets/pokemon/{{item.entry_number}}.png"/>
+      </ion-avatar>
+      {{item.name}}
+      
     </ion-item>
   </ion-list>
   <!--
