@@ -21,12 +21,12 @@ export class PokemonService {
   apiurl: string;
 
   constructor(private http: HttpClient, private pokemonAdapter: PokemonAdapter, private speciesAdapter: SpeciesAdapter) { 
-    this.apiurl = "http://pokeapi.co/api/v2/"
+    this.apiurl = "https://pokeapi.co/api/v2/"
   }
 
   /** GET heroes from the server */
   getSpecies (): Observable<Species[]> {
-    return this.http.get(this.apiurl + 'pokedex/1').pipe(
+    return this.http.get(this.apiurl + 'pokedex/1/').pipe(
       map(
         (data: any[]) => data['pokemon_entries'].map((item: any) => this.speciesAdapter.adapt(item))
       )
@@ -34,7 +34,7 @@ export class PokemonService {
   }
 
   getPokemon(id: number) : Observable<Pokemon>{
-    return this.http.get<Pokemon>('https://pokeapi.co/api/v2/pokemon-species/'+id);
+    return this.http.get<Pokemon>('https://pokeapi.co/api/v2/pokemon-species/'+id+'/');
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
