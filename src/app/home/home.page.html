@@ -21,4 +21,29 @@
       </ion-card-content>
     </ion-card>
 
+    <ion-list #mylist>
+ 
+      <ion-list-header>
+        <ion-label>My pokemons</ion-label>
+      </ion-list-header>
+   
+      <ion-item-sliding *ngFor="let item of items">
+   
+        <ion-item>
+          <ion-label text-wrap>
+            <h3>{{ item.name }}</h3>
+            <ion-text color="secondary">
+              <p>{{ item.value }}</p>
+            </ion-text>
+            <p>{{ item.modified | date:'short'}}</p>
+          </ion-label>
+        </ion-item>
+   
+        <ion-item-options side="end">
+          <ion-item-option color="secondary" (click)="updateItem(item)">Update</ion-item-option>
+          <ion-item-option color="danger" (click)="deleteItem(item)">Delete</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+   
+    </ion-list>
 </ion-content>

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { PokemonService } from '../services/pokemon.service';
 import { Pokemon } from '../models/pokemon';
+import { PokemonStorageService } from '../services/pokemon-storage.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-species',
@@ -14,7 +16,12 @@ export class SpeciesPage implements OnInit {
   id: number;
   selectedPokemon: Pokemon;
   public possibleFlavorTexts: string[];
-  constructor(  private route: ActivatedRoute, private location: Location, private pokemonService: PokemonService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private location: Location,
+    private pokemonService: PokemonService,
+    private storageService: PokemonStorageService,
+    private toastController: ToastController) { }
 
   ngOnInit() {
     this.id = +this.route.snapshot.paramMap.get('id');
@@ -31,6 +38,21 @@ export class SpeciesPage implements OnInit {
        this.possibleFlavorTexts.push(entry['flavor_text']);
       }
     }, this);
+  }
+
+  addItem() {
+    this.storageService.addItem(this.selectedPokemon).then(item => {
+      // this.selectedPokemon = <Pokemon>{};
+      this.showToast('Item added!');
+    });
+  }
+
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }
