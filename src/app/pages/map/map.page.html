@@ -12,5 +12,11 @@
 
 
 <ion-content>
-    <div id="map" style="width:100%; height:100%;"></div>
+    <ion-fab  vertical="top" horizontal="start">
+        <ion-chip color="primary" class="points-left">
+          <ion-label><span class="points">{{steps }}</span> steps</ion-label>
+        </ion-chip>
+      </ion-fab>
+  
+  <div id="map" style="width:100%; height:100%;"></div>
 </ion-content>
