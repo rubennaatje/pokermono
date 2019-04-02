@@ -3,6 +3,7 @@ import { Pedometer, IPedometerData } from '@ionic-native/pedometer/ngx';
 
 import leaflet from 'leaflet';
 import { Observable } from 'rxjs';
+import { CatchLocationService } from 'src/app/services/catch-location.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.page.html',
@@ -14,18 +15,21 @@ export class MapPage implements OnInit {
   playerCircle: any;
   accuracyCircle: any;
   steps: number;
-  constructor(private pedometer: Pedometer) { }
+  distance: number;
+  constructor(private pedometer: Pedometer, private catchLocationService: CatchLocationService) { }
 
   ngOnInit() {
-    this.pedometer.isDistanceAvailable()
-  .then((available: boolean) => console.log(available))
-  .catch((error: any) => console.log(error));
+      this.pedometer.isDistanceAvailable()
+      .then((available: boolean) => console.log(available))
+      .catch((error: any) => console.log(error));
 
-  this.pedometer.startPedometerUpdates()
-   .subscribe((data: IPedometerData) => {
-     console.log(data);
-     this.steps = data.numberOfSteps;
-   });
+      this.pedometer.startPedometerUpdates()
+      .subscribe((data: IPedometerData) => {
+        console.log(data);
+        this.steps = data.numberOfSteps;
+        this.distance = data.distance;
+      });
+      this.catchLocationService.generateLocations(51.6886659, 5.2869727);
   }
 
   ionViewDidEnter() {
@@ -38,7 +42,7 @@ export class MapPage implements OnInit {
       this.map.remove();
     }
 
-    this.map = leaflet.map('map', {zoomControl: false }).setView([51.6978162, 5.3036748], 13);
+    this.map = leaflet.map('map', {zoomControl: false }).setView([51.6886659, 5.2869727    ], 13);
 
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'www.tphangout.com',
@@ -54,25 +58,40 @@ export class MapPage implements OnInit {
       color: 'red',
       fillColor: 'red',
       fillOpacity: 100
-    }
+    };
+
     const circleOptionsRadius = {
       fillOpacity: 0.07,
       opacity: 0.15
-    }
+    };
 
-
+    const circleOptionsCatchRadius = {
+      fillOpacity: 0.15,
+      opacity: 0.35,
+      fillColor: 'green',
+      color: 'green'
+    };
 
     this.playerCircle = leaflet.circle([51.6978162, 5.3036748], 3, circleOptionsPlayer);
     this.accuracyCircle = leaflet.circle([51.6978162, 5.3036748], 10, circleOptionsRadius).addTo(this.map);
     this.playerCircle.addTo(this.map);
 
-    this.map.on('locationfound', (e: any) => {this.onLocationFound(e)});
+    this.map.on('locationfound', (e: any) => {this.onLocationFound(e); });
+
+    this.catchLocationService.getAlLocations().forEach(element => {
+      console.log(element);
+      leaflet.circle([element.lat, element.long], 100, circleOptionsCatchRadius).addTo(this.map);
+      const imageBounds = [[element.lat - 0.001, element.long - 0.0015], [element.lat + 0.001, element.long + 0.0015]];
+
+      leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).addTo(this.map);
+      leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).bringToFront();
+    });
   }
 
   onLocationFound(e) {
     const radius = e.accuracy / 2;
 
-
+    this.catchLocationService.checkCatch(e.latlng);
     this.playerCircle.setLatLng(e.latlng);
     this.accuracyCircle.setLatLng(e.latlng);
     this.accuracyCircle.setRadius(radius);

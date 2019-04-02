@@ -19,7 +19,7 @@ export class PokemonStorageService {
         return this.storage.set(ITEMS_KEY, [item]);
       }
     });
-  }
+  } 
 
   // READ
   getItems(): Promise<Pokemon[]> {
