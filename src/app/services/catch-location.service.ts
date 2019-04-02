@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { CatchLocation } from '../models/catch-location';
 import { PokemonService } from './pokemon.service';
 import { PokemonStorageService } from './pokemon-storage.service';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatchLocationService {
   locations: CatchLocation[];
-  constructor(private pokemonService: PokemonService, private pokemonStorageService: PokemonStorageService) { }
+  constructor(
+    private pokemonService: PokemonService,
+    private pokemonStorageService: PokemonStorageService,
+    private vibration: Vibration
+    ) { }
 
   generateLocations( lat: number, long: number) {
     if (this.locations === undefined || this.locations.length <= 5) {
@@ -44,6 +49,7 @@ export class CatchLocationService {
         console.log(distance + ' ' + e.pokemon.name);
         if (distance < 0.11) {
           console.log("Catched!");
+          this.vibration.vibrate(1000);
           this.pokemonStorageService.addItem(e.pokemon);
         }
       });
