@@ -39,7 +39,7 @@ export class MapPage implements OnInit {
       this.catchImages = [];
 
       this.geolocation.getCurrentPosition().then(
-        e=> console.log(e)
+        e => console.log(e)
       );
   }
 
@@ -99,7 +99,7 @@ export class MapPage implements OnInit {
       this.map.removeLayer(element);
     });
     const locations = this.catchLocationService.getAlLocations();
-    if(locations !== undefined || locations.length > 1){
+    if (locations !== undefined) {
         locations.forEach(element => {
         const circleOptionsCatchRadius = {
           fillOpacity: 0.15,
