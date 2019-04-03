@@ -46,7 +46,7 @@ export class CatchLocationService {
   }
 
   checkCatch(latlon: { lat: number; lng: number; }) {
-    if (this.locations !== undefined || this.locations.length <= 5) {
+    if (this.locations !== undefined && this.locations.length >= 5) {
       for (let i = 0; i < this.locations.length; i++) {
         const e = this.locations[i];
         const distance = this.getDistanceFromLatLonInKm(latlon.lat, latlon.lng, e.lat, e.long);

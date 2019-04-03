@@ -40,13 +40,6 @@ export class SpeciesPage implements OnInit {
     }, this);
   }
 
-  addItem() {
-    this.storageService.addItem(this.selectedPokemon).then(item => {
-      // this.selectedPokemon = <Pokemon>{};
-      this.showToast('Item added!');
-    });
-  }
-
   async showToast(msg) {
     const toast = await this.toastController.create({
       message: msg,
