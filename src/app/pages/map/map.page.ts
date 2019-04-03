@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { CatchLocationService } from 'src/app/services/catch-location.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { element } from '@angular/core/src/render3';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 @Component({
   selector: 'app-map',
   templateUrl: './map.page.html',
@@ -20,7 +21,7 @@ export class MapPage implements OnInit {
   catchImages: any[];
   steps: number;
   distance: number;
-  constructor(private pedometer: Pedometer, private catchLocationService: CatchLocationService, private changeRef: ChangeDetectorRef) { }
+  constructor(private pedometer: Pedometer, private catchLocationService: CatchLocationService, private changeRef: ChangeDetectorRef, private geolocation: Geolocation) { }
 
   ngOnInit() {
       this.pedometer.isDistanceAvailable()
@@ -37,6 +38,10 @@ export class MapPage implements OnInit {
       this.catchLocationService.generateLocations(51.6886659, 5.2869727);
       this.catchCircles = [];
       this.catchImages = [];
+
+      this.geolocation.getCurrentPosition().then(
+        e=> console.log(e)
+      );
   }
 
   ionViewDidEnter() {
