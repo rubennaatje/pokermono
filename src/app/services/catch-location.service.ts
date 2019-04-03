@@ -23,11 +23,11 @@ export class CatchLocationService {
 
       this.locations = new Array(10);
 
-      const minLat = lat - 0.015;
-      const maxLat = lat + 0.015;
+      const minLat = lat - 0.001;
+      const maxLat = lat + 0.001;
 
-      const minLong = long - 0.015;
-      const maxLong = long + 0.015;
+      const minLong = long - 0.001;
+      const maxLong = long + 0.001;
 
       for (let i = 0; i < 10; i++) {
         const newLat = Math.random() * (maxLat - minLat) + minLat;
