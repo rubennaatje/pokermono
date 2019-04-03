@@ -29,14 +29,13 @@
    
       <ion-item-sliding *ngFor="let item of items">
    
-        <ion-item>
-          <ion-label text-wrap>
-            <h3>{{ item.name }}</h3>
-            <ion-text color="secondary">
-              <p>{{ item.value }}</p>
-            </ion-text>
-            <p>{{ item.modified | date:'short'}}</p>
-          </ion-label>
+        <ion-item routerLink="/species/{{item.id}}">
+          <ion-avatar slot="start" *ngIf="item.id"> 
+              <img src="assets/pokemon/{{item.id}}.png"/>
+          </ion-avatar>
+          <h1 class="capitalize">
+            {{item.name}}
+          </h1>
         </ion-item>
    
         <ion-item-options side="end">

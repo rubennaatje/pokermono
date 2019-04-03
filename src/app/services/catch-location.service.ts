@@ -3,6 +3,7 @@ import { CatchLocation } from '../models/catch-location';
 import { PokemonService } from './pokemon.service';
 import { PokemonStorageService } from './pokemon-storage.service';
 import { Vibration } from '@ionic-native/vibration/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,21 @@ export class CatchLocationService {
   constructor(
     private pokemonService: PokemonService,
     private pokemonStorageService: PokemonStorageService,
-    private vibration: Vibration
+    private vibration: Vibration,
+    private toastController: ToastController,
     ) { }
 
   generateLocations( lat: number, long: number) {
+
     if (this.locations === undefined || this.locations.length <= 5) {
 
       this.locations = new Array(10);
 
-      const minLat = lat - 0.011;
-      const maxLat = lat + 0.011;
+      const minLat = lat - 0.015;
+      const maxLat = lat + 0.015;
 
-      const minLong = long - 0.011;
-      const maxLong = long + 0.011;
+      const minLong = long - 0.015;
+      const maxLong = long + 0.015;
 
       for (let i = 0; i < 10; i++) {
         const newLat = Math.random() * (maxLat - minLat) + minLat;
@@ -43,16 +46,21 @@ export class CatchLocationService {
   }
 
   checkCatch(latlon: { lat: number; lng: number; }) {
-    if (this.locations !== undefined) {
-      this.locations.forEach(e => {
+    if (this.locations !== undefined || this.locations.length <= 5) {
+      for (let i = 0; i < this.locations.length; i++) {
+        const e = this.locations[i];
         const distance = this.getDistanceFromLatLonInKm(latlon.lat, latlon.lng, e.lat, e.long);
         console.log(distance + ' ' + e.pokemon.name);
         if (distance < 0.11) {
-          console.log("Catched!");
+          console.log('Catched!');
           this.vibration.vibrate(1000);
           this.pokemonStorageService.addItem(e.pokemon);
+          this.locations.splice(i, 1);
+          this.showToast('Catched ' + e.pokemon.name + '!');
         }
-      });
+      }
+    } else {
+      this.generateLocations(latlon.lat, latlon.lng);
     }
   }
 
@@ -71,5 +79,13 @@ export class CatchLocationService {
 
   deg2rad(deg: number) {
     return deg * (Math.PI / 180);
+  }
+
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 }
