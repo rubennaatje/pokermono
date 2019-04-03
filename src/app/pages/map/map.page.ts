@@ -35,7 +35,6 @@ export class MapPage implements OnInit {
         this.distance = data.distance;
         this.changeRef.detectChanges();
       });
-      this.catchLocationService.generateLocations(51.6886659, 5.2869727);
       this.catchCircles = [];
       this.catchImages = [];
 
