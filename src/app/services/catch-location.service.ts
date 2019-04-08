@@ -22,7 +22,7 @@ export class CatchLocationService {
     if (this.locations === undefined || this.locations.length <= 5) {
 
       this.locations = new Array(10);
-      const distance = 0.003;
+      const distance = 0.010;
 
       const minLat = lat - distance;
       const maxLat = lat + distance;
@@ -52,6 +52,7 @@ export class CatchLocationService {
       for (let i = 0; i < this.locations.length; i++) {
         const e = this.locations[i];
         const distance = this.getDistanceFromLatLonInKm(latlon.lat, latlon.lng, e.lat, e.long);
+        // if user is within the shown circle
         if (distance < 0.11) {
           console.log('Catched!');
           this.vibration.vibrate(1000);
@@ -82,7 +83,7 @@ export class CatchLocationService {
     return deg * (Math.PI / 180);
   }
 
-  async showToast(msg) {
+  async showToast(msg: string) {
     const toast = await this.toastController.create({
       message: msg,
       duration: 2000
