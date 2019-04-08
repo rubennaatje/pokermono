@@ -13,6 +13,7 @@ export class SpeciesPage implements OnInit {
 
   id: number;
   selectedPokemon: Pokemon;
+  public flavourtext: String;
   public possibleFlavorTexts: string[];
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,11 @@ export class SpeciesPage implements OnInit {
        this.possibleFlavorTexts.push(entry['flavor_text']);
       }
     }, this);
+    this.setFlavourText();
+  }
+
+  setFlavourText(){
+    this.flavourtext = this.possibleFlavorTexts[Math.floor(Math.random() * this.possibleFlavorTexts.length)];
   }
 
 }

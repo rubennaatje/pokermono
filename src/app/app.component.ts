@@ -8,6 +8,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { OneSignal, OSNotificationPayload } from '@ionic-native/onesignal/ngx';
 import { isCordovaAvailable } from '../common/is-cordova-available';
 import { oneSignalAppId, sender_id } from '../config';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { CatchLocationService } from 'src/app/services/catch-location.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +38,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private catchLocationService: CatchLocationService,
+    private geolocation: Geolocation
   ) {
     this.initializeApp();
   }
@@ -52,6 +56,12 @@ export class AppComponent {
         this.oneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
         this.oneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
         this.oneSignal.endInit();
+
+        this.geolocation.getCurrentPosition().then(
+          e => {
+            this.catchLocationService.generateLocations(e.coords.latitude,e.coords.longitude);
+          }
+        );
       }
     });
   }

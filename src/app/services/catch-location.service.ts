@@ -50,7 +50,6 @@ export class CatchLocationService {
       for (let i = 0; i < this.locations.length; i++) {
         const e = this.locations[i];
         const distance = this.getDistanceFromLatLonInKm(latlon.lat, latlon.lng, e.lat, e.long);
-        console.log(distance + ' ' + e.pokemon.name);
         if (distance < 0.11) {
           console.log('Catched!');
           this.vibration.vibrate(1000);

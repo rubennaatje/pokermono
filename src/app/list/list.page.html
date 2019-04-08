@@ -13,7 +13,7 @@
   <ion-list *ngIf="pokemons">
     <ion-item *ngFor="let item of pokemons" routerLink="/species/{{item.entry_number}}">
       <ion-avatar slot="start" *ngIf="item.entry_number"> 
-          <img src="assets/pokemon/{{item.entry_number}}.png"/>
+          <ion-img src="assets/pokemon/{{item.entry_number}}.png"> </ion-img>
       </ion-avatar>
       <h1 class="capitalize">
         {{item.name}}

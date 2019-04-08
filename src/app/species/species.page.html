@@ -17,14 +17,9 @@
         </ion-card-header>
       
         <ion-card-content>
-          help
-          <div *ngFor="let text of selectedPokemon.flavor_text_entries">
-            
-            <p *ngIf="text.language.name == en">
-              {{text | json}}
+            <p>
+              {{flavourtext}}
             </p>
-
-          </div>
           <!-- {{selectedPokemon.flavor_text_entries | json}} -->
         </ion-card-content>
       </ion-card>
