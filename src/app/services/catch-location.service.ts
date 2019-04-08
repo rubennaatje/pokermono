@@ -22,19 +22,21 @@ export class CatchLocationService {
     if (this.locations === undefined || this.locations.length <= 5) {
 
       this.locations = new Array(10);
+      const distance = 0.003;
 
-      const minLat = lat - 0.003;
-      const maxLat = lat + 0.003;
+      const minLat = lat - distance;
+      const maxLat = lat + distance;
 
-      const minLong = long - 0.003;
-      const maxLong = long + 0.003;
+      const minLong = long - distance;
+      const maxLong = long + distance;
 
       for (let i = 0; i < 10; i++) {
         const newLat = Math.random() * (maxLat - minLat) + minLat;
         const newLong = Math.random() * (maxLong - minLong) + minLong;
         const randomId = Math.floor(Math.random() * (71) + 1);
         this.locations[i] = new CatchLocation(newLat, newLong);
-        this.pokemonService.getPokemon(randomId).subscribe(pokemon => {this.locations[i].pokemon = pokemon; console.log("added pokemon" + pokemon.name);});
+        // get pokemon async
+        this.pokemonService.getPokemon(randomId).subscribe(pokemon => {this.locations[i].pokemon = pokemon; });
       }
 
     }
