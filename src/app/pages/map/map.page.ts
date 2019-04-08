@@ -29,39 +29,34 @@ export class MapPage implements OnInit {
     ) { }
 
   ngOnInit() {
-      this.pedometer.isDistanceAvailable()
-      .then((available: boolean) => console.log(available))
-      .catch((error: any) => console.log(error));
+    // Init circles
+    this.catchCircles = [];
+    this.catchImages = [];
 
-      this.pedometer.startPedometerUpdates()
-      .subscribe((data: IPedometerData) => {
-        console.log(data);
-        this.steps = data.numberOfSteps;
-        this.distance = data.distance;
-        this.changeRef.detectChanges();
-      });
-      this.catchCircles = [];
-      this.catchImages = [];
-
-      this.geolocation.getCurrentPosition().then(
-        e => {
-          this.catchLocationService.generateLocations(e.coords.latitude, e.coords.longitude);
-        }
-      );
+    // Init pedometer updates and update steps everytime and make angular detect changes
+    this.pedometer.startPedometerUpdates()
+    .subscribe((data: IPedometerData) => {
+      this.steps = data.numberOfSteps;
+      this.distance = data.distance;
+      this.changeRef.detectChanges();
+    });
+    
+    // Ask for location on init and generate locations
+    this.geolocation.getCurrentPosition().then(
+      e => {
+        this.catchLocationService.generateLocations(e.coords.latitude, e.coords.longitude);
+      }
+    );
   }
 
   ionViewDidEnter() {
+    // Only set new map if it doesn't exist yet.
     if (!this.map) {
       this.loadmap();
     }
   }
 
   loadmap() {
-
-    if (this.map) {
-      this.map.remove();
-    }
-
     this.map = leaflet.map('map', {zoomControl: false }).setView([51.6886659, 5.2869727    ], 13);
 
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -84,43 +79,46 @@ export class MapPage implements OnInit {
       fillOpacity: 0.07,
       opacity: 0.15
     };
-
-    this.playerCircle = leaflet.circle([51.6978162, 5.3036748], 3, circleOptionsPlayer);
+    // Set circles on default spots.
+    this.playerCircle = leaflet.circle([51.6978162, 5.3036748], 3, circleOptionsPlayer).addTo(this.map);;
     this.accuracyCircle = leaflet.circle([51.6978162, 5.3036748], 10, circleOptionsRadius).addTo(this.map);
-    this.playerCircle.addTo(this.map);
 
     this.map.on('locationfound', (e: any) => {this.onLocationFound(e); });
   }
 
   onLocationFound(e) {
-
-    console.log('location found');
     const radius = e.accuracy / 2;
 
     this.catchLocationService.checkCatch(e.latlng);
+    // Move all circles and set radius of accuracy
     this.playerCircle.setLatLng(e.latlng);
     this.accuracyCircle.setLatLng(e.latlng);
     this.accuracyCircle.setRadius(radius);
 
-    // this.map.panTo(e.latlng);
+    // remove all map markers and images.
     this.catchCircles.forEach(element => {
       this.map.removeLayer(element);
     });
     this.catchImages.forEach(element => {
       this.map.removeLayer(element);
     });
+
     const locations = this.catchLocationService.getAlLocations();
     if (locations !== undefined) {
         locations.forEach(element => {
+
           const circleOptionsCatchRadius = {
             fillOpacity: 0.15,
             opacity: 0.35,
             fillColor: 'green',
             color: 'green'
           };
+
           if (element.pokemon !== undefined) {
+            // Draw circle
             this.catchCircles.push(leaflet.circle([element.lat, element.long], 100, circleOptionsCatchRadius).addTo(this.map));
 
+            // Draw image
             const imageBounds = [[element.lat - 0.001, element.long - 0.0015], [element.lat + 0.001, element.long + 0.0015]];
             this.catchImages.push(leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).addTo(this.map));
             leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).bringToFront();
