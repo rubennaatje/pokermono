@@ -34,7 +34,7 @@ export class CatchLocationService {
         const newLong = Math.random() * (maxLong - minLong) + minLong;
         const randomId = Math.floor(Math.random() * (71) + 1);
         this.locations[i] = new CatchLocation(newLat, newLong);
-        this.pokemonService.getPokemon(randomId).subscribe(pokemon => this.locations[i].pokemon = pokemon);
+        this.pokemonService.getPokemon(randomId).subscribe(pokemon => {this.locations[i].pokemon = pokemon; console.log("added pokemon" + pokemon.name);});
       }
 
     }

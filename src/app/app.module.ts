@@ -15,6 +15,7 @@ import { Pedometer } from '@ionic-native/pedometer/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +34,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     Geolocation,
     Vibration,
     OneSignal,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
