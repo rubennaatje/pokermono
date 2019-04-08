@@ -39,7 +39,9 @@ export class MapPage implements OnInit {
       this.catchImages = [];
 
       this.geolocation.getCurrentPosition().then(
-        e => console.log(e)
+        e => {
+          this.catchLocationService.generateLocations(e.coords.latitude,e.coords.longitude);
+        }
       );
   }
 
@@ -84,6 +86,8 @@ export class MapPage implements OnInit {
   }
 
   onLocationFound(e) {
+    
+    console.log("location found");
     const radius = e.accuracy / 2;
 
     this.catchLocationService.checkCatch(e.latlng);
@@ -101,20 +105,21 @@ export class MapPage implements OnInit {
     const locations = this.catchLocationService.getAlLocations();
     if (locations !== undefined) {
         locations.forEach(element => {
-        const circleOptionsCatchRadius = {
-          fillOpacity: 0.15,
-          opacity: 0.35,
-          fillColor: 'green',
-          color: 'green'
-        };
-        console.log(element.pokemon);
-        this.catchCircles.push(leaflet.circle([element.lat, element.long], 100, circleOptionsCatchRadius).addTo(this.map));
+          const circleOptionsCatchRadius = {
+            fillOpacity: 0.15,
+            opacity: 0.35,
+            fillColor: 'green',
+            color: 'green'
+          };
+          if (element.pokemon !== undefined) {
+            this.catchCircles.push(leaflet.circle([element.lat, element.long], 100, circleOptionsCatchRadius).addTo(this.map));
 
-        const imageBounds = [[element.lat - 0.001, element.long - 0.0015], [element.lat + 0.001, element.long + 0.0015]];
-        this.catchImages.push(leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).addTo(this.map));
-        leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).bringToFront();
+            const imageBounds = [[element.lat - 0.001, element.long - 0.0015], [element.lat + 0.001, element.long + 0.0015]];
+            this.catchImages.push(leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).addTo(this.map));
+            leaflet.imageOverlay('/assets/pokemon/' + element.pokemon.id + '.png', imageBounds).bringToFront();
+          }
       });
-  }
+    }
   }
 
 }

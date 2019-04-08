@@ -14,6 +14,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Pedometer } from '@ionic-native/pedometer/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { Vibration } from '@ionic-native/vibration/ngx';
     Pedometer,
     Geolocation,
     Vibration,
+    OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
