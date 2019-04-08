@@ -23,12 +23,12 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
+      title: 'Pokemon',
       url: '/list',
       icon: 'list'
     },
     {
-      title: 'Map',
+      title: 'Catch',
       url: '/map',
       icon: 'map'
     }

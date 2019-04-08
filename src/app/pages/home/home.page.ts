@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, ToastController, IonList } from '@ionic/angular';
-import { PokemonStorageService } from '../services/pokemon-storage.service';
-import { Pokemon } from '../models/pokemon';
+import { PokemonStorageService } from '../../services/pokemon-storage.service';
+import { Pokemon } from '../../models/pokemon';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({

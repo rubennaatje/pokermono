@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { PokemonService } from '../services/pokemon.service';
-import { Pokemon } from '../models/pokemon';
+import { PokemonService } from '../../services/pokemon.service';
+import { Pokemon } from '../../models/pokemon';
 
 @Component({
   selector: 'app-species',

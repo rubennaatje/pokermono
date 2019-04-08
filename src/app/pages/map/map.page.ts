@@ -21,7 +21,12 @@ export class MapPage implements OnInit {
   catchImages: any[];
   steps: number;
   distance: number;
-  constructor(private pedometer: Pedometer, private catchLocationService: CatchLocationService, private changeRef: ChangeDetectorRef, private geolocation: Geolocation) { }
+  constructor(
+    private pedometer: Pedometer,
+    private catchLocationService: CatchLocationService,
+    private changeRef: ChangeDetectorRef,
+    private geolocation: Geolocation
+    ) { }
 
   ngOnInit() {
       this.pedometer.isDistanceAvailable()
@@ -40,13 +45,15 @@ export class MapPage implements OnInit {
 
       this.geolocation.getCurrentPosition().then(
         e => {
-          this.catchLocationService.generateLocations(e.coords.latitude,e.coords.longitude);
+          this.catchLocationService.generateLocations(e.coords.latitude, e.coords.longitude);
         }
       );
   }
 
   ionViewDidEnter() {
-    this.loadmap();
+    if (!this.map) {
+      this.loadmap();
+    }
   }
 
   loadmap() {
@@ -86,8 +93,8 @@ export class MapPage implements OnInit {
   }
 
   onLocationFound(e) {
-    
-    console.log("location found");
+
+    console.log('location found');
     const radius = e.accuracy / 2;
 
     this.catchLocationService.checkCatch(e.latlng);

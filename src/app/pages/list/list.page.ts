@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild  } from '@angular/core';
-import { Pokemon} from '../models/pokemon';
-import { POKEMON } from '../mock-pokemon';
-import { PokemonService } from '../services/pokemon.service';
+import { Pokemon} from '../../models/pokemon';
+import { POKEMON } from '../../mock-pokemon';
+import { PokemonService } from '../../services/pokemon.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Species } from '../models/species';
+import { Species } from '../../models/species';
 import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
